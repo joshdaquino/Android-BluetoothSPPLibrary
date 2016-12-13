@@ -30,23 +30,22 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.UUID;
 
 @SuppressLint("NewApi")
 public class BluetoothService {
     // Debugging
     private static final String TAG = "Bluetooth Service";
-    
+
     // Name for the SDP record when creating server socket
     private static final String NAME_SECURE = "Bluetooth Secure";
-    
+
     // Unique UUID for this application
     private static final UUID UUID_ANDROID_DEVICE =
             UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final UUID UUID_OTHER_DEVICE =
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    
+
     // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
@@ -55,8 +54,7 @@ public class BluetoothService {
     private ConnectedThread mConnectedThread;
     private int mState;
     private boolean isAndroid = BluetoothState.DEVICE_ANDROID;
-    private boolean mUseCarriageReturn = true;
-        
+
     // Constructor. Prepares a new BluetoothChat session
     // context : The UI Activity Context
     // handler : A Handler to send messages back to the UI Activity
@@ -66,28 +64,37 @@ public class BluetoothService {
         mHandler = handler;
     }
 
-    
+
     // Set the current state of the chat connection
     // state : An integer defining the current connection state
     private synchronized void setState(int state) {
-        Log.d(TAG, "setState() " + mState + " -> " + state);
+        Log.d(TAG, "setState() " + getNameOfState(mState) + " -> " + getNameOfState(state));
         mState = state;
-        
+
         // Give the new state to the Handler so the UI Activity can update
         mHandler.obtainMessage(BluetoothState.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+    }
+
+    private String getNameOfState(int state) {
+        switch (state) {
+            case BluetoothState.STATE_NONE:
+                return "STATE_NONE";
+            case BluetoothState.STATE_LISTEN:
+                return "STATE_LISTEN";
+            case BluetoothState.STATE_CONNECTING:
+                return "STATE_CONNECTING";
+            case BluetoothState.STATE_CONNECTED:
+                return "STATE_CONNECTED";
+            case BluetoothState.STATE_NULL:
+                return "STATE_NULL";
+            default:
+                return "UNKNOWN";
+        }
     }
 
     // Return the current connection state. 
     public synchronized int getState() {
         return mState;
-    }
-
-    /**
-     * Set whether received messages should end with carriage return followed by newline or just newline
-     * @param useCarriageReturn true to use carriage return
-     */
-    public synchronized void setUseCarriageReturn(boolean useCarriageReturn) {
-        mUseCarriageReturn = useCarriageReturn;
     }
 
     // Start the chat service. Specifically start AcceptThread to begin a
@@ -97,9 +104,9 @@ public class BluetoothService {
         if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
         // Cancel any thread currently running a connection
         if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
-        
+
         setState(BluetoothState.STATE_LISTEN);
-        
+
         // Start the thread to listen on a BluetoothServerSocket
         if (mSecureAcceptThread == null) {
             mSecureAcceptThread = new AcceptThread(isAndroid);
@@ -131,8 +138,7 @@ public class BluetoothService {
      * @param socket  The BluetoothSocket on which the connection was made
      * @param device  The BluetoothDevice that has been connected
      */
-    public synchronized void connected(BluetoothSocket socket, BluetoothDevice
-            device, final String socketType) {
+    public synchronized void connected(BluetoothSocket socket, BluetoothDevice device, final String socketType) {
         // Cancel the thread that completed the connection
         if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
 
@@ -362,29 +368,17 @@ public class BluetoothService {
         }
 
         public void run() {
-            byte[] buffer;
-            ArrayList<Integer> arr_byte = new ArrayList<Integer>();
-
-            byte terminator = mUseCarriageReturn ? (byte)0x0A : (byte)0x0D;
+            byte[] buffer = new byte[2048];  // buffer store for the stream
+            int bytes; // bytes returned from read()
 
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
-                    int data = mmInStream.read();
+                    // Read from the InputStream
+                    bytes = mmInStream.read(buffer);
 
-                    if(mUseCarriageReturn && data == 0x0A) {
-                    } else if((!mUseCarriageReturn && data == 0x0A) || data == 0x0D) {
-                        buffer = new byte[arr_byte.size()];
-                        for(int i = 0 ; i < arr_byte.size() ; i++) {
-                            buffer[i] = arr_byte.get(i).byteValue();
-                        }
-                        // Send the obtained bytes to the UI Activity
-                        mHandler.obtainMessage(BluetoothState.MESSAGE_READ
-                                , buffer.length, -1, buffer).sendToTarget();
-                        arr_byte = new ArrayList<Integer>();
-                    } else {
-                        arr_byte.add(data);
-                    }
+                    // Send the obtained bytes to the UI Activity
+                    mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
                 } catch (IOException e) {
                     connectionLost();
                     // Start the service over to restart listening mode
@@ -397,16 +391,11 @@ public class BluetoothService {
         // Write to the connected OutStream.
         // @param buffer  The bytes to write
         public void write(byte[] buffer) {
-            try {/*
-                byte[] buffer2 = new byte[buffer.length + 2];
-                for(int i = 0 ; i < buffer.length ; i++) 
-                    buffer2[i] = buffer[i];
-                buffer2[buffer2.length - 2] = 0x0A;
-                buffer2[buffer2.length - 1] = 0x0D;*/
+            try {
                 mmOutStream.write(buffer);
+
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(BluetoothState.MESSAGE_WRITE
-                        , -1, -1, buffer).sendToTarget();
+                mHandler.obtainMessage(BluetoothState.MESSAGE_WRITE, -1, -1, buffer).sendToTarget();
             } catch (IOException e) { }
         }
 

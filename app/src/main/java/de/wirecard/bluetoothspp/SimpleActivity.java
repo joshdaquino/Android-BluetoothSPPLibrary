@@ -14,18 +14,19 @@
 
 package de.wirecard.bluetoothspp;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
 import de.wirecard.bluetoothspp.library.BluetoothSPP;
-import de.wirecard.bluetoothspp.library.BluetoothState;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
+import de.wirecard.bluetoothspp.library.BluetoothState;
 import de.wirecard.bluetoothspp.library.DeviceList;
 
 public class SimpleActivity extends Activity {
@@ -45,8 +46,8 @@ public class SimpleActivity extends Activity {
 		}
 		
 		bt.setOnDataReceivedListener(new OnDataReceivedListener() {
-			public void onDataReceived(byte[] data, String message) {
-				Toast.makeText(SimpleActivity.this, message, Toast.LENGTH_SHORT).show();
+			public void onDataReceived(byte[] data, int length) {
+				Toast.makeText(SimpleActivity.this, new String(data, 0, length), Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -104,7 +105,7 @@ public class SimpleActivity extends Activity {
 		Button btnSend = (Button)findViewById(R.id.btnSend);
 		btnSend.setOnClickListener(new OnClickListener(){
         	public void onClick(View v){
-        		bt.send("Text", true);
+        		bt.send("Text");
         	}
         });
 	}

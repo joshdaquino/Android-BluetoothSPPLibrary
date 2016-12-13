@@ -14,9 +14,9 @@
 
 package de.wirecard.bluetoothspp;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,8 +25,8 @@ import android.widget.Toast;
 
 import de.wirecard.bluetoothspp.library.BluetoothSPP;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.AutoConnectionListener;
-import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothStateListener;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
+import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothStateListener;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
 import de.wirecard.bluetoothspp.library.BluetoothState;
 import de.wirecard.bluetoothspp.library.DeviceList;
@@ -61,8 +61,8 @@ public class ListenerActivity extends Activity {
         });
 
         bt.setOnDataReceivedListener(new OnDataReceivedListener() {
-            public void onDataReceived(byte[] data, String message) {
-                Log.i("Check", "Message : " + message);
+            public void onDataReceived(byte[] data, int length) {
+                Log.i("Check", "Message : " + new String(data, 0, length));
             }
         });
 

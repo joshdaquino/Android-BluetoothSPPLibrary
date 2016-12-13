@@ -27,11 +27,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import de.wirecard.bluetoothspp.library.BluetoothSPP;
-import de.wirecard.bluetoothspp.library.BluetoothState;
-import de.wirecard.bluetoothspp.library.DeviceList;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
+import de.wirecard.bluetoothspp.library.BluetoothState;
+import de.wirecard.bluetoothspp.library.DeviceList;
 
 public class TerminalActivity extends Activity {
     BluetoothSPP bt;
@@ -60,8 +61,8 @@ public class TerminalActivity extends Activity {
         }
 
         bt.setOnDataReceivedListener(new OnDataReceivedListener() {
-            public void onDataReceived(byte[] data, String message) {
-                textRead.append(message + "\n");
+            public void onDataReceived(byte[] data, int length) {
+                textRead.append(new String(data, 0, length) + "\n");
             }
         });
 
@@ -137,7 +138,7 @@ public class TerminalActivity extends Activity {
         btnSend.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
                 if(etMessage.getText().length() != 0) {
-                    bt.send(etMessage.getText().toString(), true);
+                    bt.send(etMessage.getText().toString());
                     etMessage.setText("");
                 }
             }

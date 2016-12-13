@@ -45,9 +45,9 @@ public class DeviceListActivity extends Activity {
         }
 
         bt.setOnDataReceivedListener(new OnDataReceivedListener() {
-            public void onDataReceived(byte[] data, String message) {
-                Log.i("Check", "Length : " + data.length);
-                Log.i("Check", "Message : " + message);
+            public void onDataReceived(byte[] data, int length) {
+                Log.i("Check", "Length : " + length);
+                Log.i("Check", "Message : " + new String(data, 0, length));
             }
         });
 
@@ -109,7 +109,7 @@ public class DeviceListActivity extends Activity {
         Button btnSend = (Button)findViewById(R.id.btnSend);
         btnSend.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
-                bt.send("Text", true);
+                bt.send("Text");
             }
         });
     }
