@@ -1,6 +1,4 @@
 /*
- * Copyright 2014 Akexorcist
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +13,7 @@
  */
 
 
-package app.akexorcist.bluetotohspp.library;
+package de.wirecard.bluetoothspp.library;
 
 public class BluetoothState {
     // Constants that indicate the current connection state

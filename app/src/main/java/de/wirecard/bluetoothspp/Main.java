@@ -1,4 +1,4 @@
-package app.akexorcist.bluetoothspp;
+package de.wirecard.bluetoothspp;
 
 import android.app.Activity;
 import android.content.Intent;

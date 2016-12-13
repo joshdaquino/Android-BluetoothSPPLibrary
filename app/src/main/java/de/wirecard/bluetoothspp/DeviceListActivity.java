@@ -1,6 +1,4 @@
 /*
- * Copyright 2014 Akexorcist
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,31 +12,28 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetoothspp;
+package de.wirecard.bluetoothspp;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.AutoConnectionListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothStateListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothConnectionListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.OnDataReceivedListener;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.DeviceList;
+import de.wirecard.bluetoothspp.library.BluetoothSPP;
+import de.wirecard.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
+import de.wirecard.bluetoothspp.library.BluetoothState;
+import de.wirecard.bluetoothspp.library.DeviceList;
 
-public class ListenerActivity extends Activity {
+public class DeviceListActivity extends Activity {
     BluetoothSPP bt;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listener);
+        setContentView(R.layout.activity_devicelist);
 
         bt = new BluetoothSPP(this);
 
@@ -49,46 +44,10 @@ public class ListenerActivity extends Activity {
             finish();
         }
 
-        bt.setBluetoothStateListener(new BluetoothStateListener() {
-            public void onServiceStateChanged(int state) {
-                if(state == BluetoothState.STATE_CONNECTED)
-                    Log.i("Check", "State : Connected");
-                else if(state == BluetoothState.STATE_CONNECTING)
-                    Log.i("Check", "State : Connecting");
-                else if(state == BluetoothState.STATE_LISTEN)
-                    Log.i("Check", "State : Listen");
-                else if(state == BluetoothState.STATE_NONE)
-                    Log.i("Check", "State : None");
-            }
-        });
-
         bt.setOnDataReceivedListener(new OnDataReceivedListener() {
             public void onDataReceived(byte[] data, String message) {
+                Log.i("Check", "Length : " + data.length);
                 Log.i("Check", "Message : " + message);
-            }
-        });
-
-        bt.setBluetoothConnectionListener(new BluetoothConnectionListener() {
-            public void onDeviceConnected(String name, String address) {
-                Log.i("Check", "Device Connected!!");
-            }
-
-            public void onDeviceDisconnected() {
-                Log.i("Check", "Device Disconnected!!");
-            }
-
-            public void onDeviceConnectionFailed() {
-                Log.i("Check", "Unable to Connected!!");
-            }
-        });
-
-        bt.setAutoConnectionListener(new AutoConnectionListener() {
-            public void onNewConnection(String name, String address) {
-                Log.i("Check", "New Connection - " + name + " - " + address);
-            }
-
-            public void onAutoConnectionStarted() {
-                Log.i("Check", "Auto menu_connection started");
             }
         });
 
@@ -98,7 +57,14 @@ public class ListenerActivity extends Activity {
                 if(bt.getServiceState() == BluetoothState.STATE_CONNECTED) {
                     bt.disconnect();
                 } else {
-                    Intent intent = new Intent(ListenerActivity.this, DeviceList.class);
+                    Intent intent = new Intent(DeviceListActivity.this, DeviceList.class);
+                    intent.putExtra("bluetooth_devices", "Bluetooth devices");
+                    intent.putExtra("no_devices_found", "No device");
+                    intent.putExtra("scanning", "Scanning");
+                    intent.putExtra("scan_for_devices", "Search");
+                    intent.putExtra("select_device", "Select");
+                    intent.putExtra("layout_list", R.layout.device_layout_list);
+                    intent.putExtra("layout_text", R.layout.device_layout_text);
                     startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
                 }
             }
@@ -139,5 +105,12 @@ public class ListenerActivity extends Activity {
         }
     }
 
-    public void setup() { }
+    public void setup() {
+        Button btnSend = (Button)findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(new OnClickListener(){
+            public void onClick(View v){
+                bt.send("Text", true);
+            }
+        });
+    }
 }

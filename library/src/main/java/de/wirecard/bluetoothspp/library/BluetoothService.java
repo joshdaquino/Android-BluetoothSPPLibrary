@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetotohspp.library;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.UUID;
+package de.wirecard.bluetoothspp.library;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -32,6 +26,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.UUID;
 
 @SuppressLint("NewApi")
 public class BluetoothService {

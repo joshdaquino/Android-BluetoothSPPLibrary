@@ -1,6 +1,4 @@
 /*
- * Copyright (C) 2014 Akexorcist
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,10 +12,7 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetotohspp.library;
-
-import java.util.ArrayList;
-import java.util.Set;
+package de.wirecard.bluetoothspp.library;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -25,9 +20,13 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 @SuppressLint("NewApi")
 public class BluetoothSPP {

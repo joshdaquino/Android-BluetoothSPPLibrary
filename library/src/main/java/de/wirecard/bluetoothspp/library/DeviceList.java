@@ -1,6 +1,4 @@
 /*
- * Copyright 2014 Akexorcist
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,9 +13,7 @@
  */
 
 
-package app.akexorcist.bluetotohspp.library;
-
-import java.util.Set;
+package de.wirecard.bluetoothspp.library;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -30,14 +26,18 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.Set;
+
+import de.wirecard.bluetotohspp.library.R;
 
 @SuppressLint("NewApi")
 public class DeviceList extends Activity {

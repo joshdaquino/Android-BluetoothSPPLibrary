@@ -1,6 +1,4 @@
 /*
- * Copyright 2014 Akexorcist
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +12,7 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetoothspp;
+package de.wirecard.bluetoothspp;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -24,10 +22,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothConnectionListener;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.DeviceList;
+import de.wirecard.bluetoothspp.library.BluetoothSPP;
+import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
+import de.wirecard.bluetoothspp.library.BluetoothState;
+import de.wirecard.bluetoothspp.library.DeviceList;
 
 public class AutoConnectActivity extends Activity {
     BluetoothSPP bt;

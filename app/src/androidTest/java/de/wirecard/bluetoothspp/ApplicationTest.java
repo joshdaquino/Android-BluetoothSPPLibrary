@@ -1,4 +1,4 @@
-package app.akexorcist.bluetotohspp.library;
+package de.wirecard.bluetoothspp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

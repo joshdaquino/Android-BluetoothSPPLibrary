@@ -1,12 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.akexorcist.bluetotohspp.library"
+    package="de.wirecard.bluetotohspp.library"
     >
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application>
-        <activity android:name="app.akexorcist.bluetotohspp.library.DeviceList" />
+        <activity android:name="de.wirecard.bluetoothspp.library.DeviceList" />
     </application>
 
 </manifest>

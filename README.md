@@ -1,9 +1,8 @@
-[![Build Status](https://travis-ci.org/akexorcist/Android-BluetoothSPP.svg?branch=master)](https://travis-ci.org/akexorcist/Android-BluetoothSPP)
 Android-BluetoothSPPLibrary
 ===========================
 
 
-![BluetoothSPP Library](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/header.png)
+![BluetoothSPP Library](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/header.png)
 
 
 Bluetooth Serial Port Profile which comfortable to developer application to communication with microcontroller or android device via bluetooth.
@@ -31,18 +30,19 @@ Feature
 Download
 --------------
 
-Maven
-```
-<dependency>
-  <groupId>com.akexorcist</groupId>
-  <artifactId>bluetoothspp</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
-
 Gradle
+Add it in your root build.gradle at the end of repositories:
 ```
-compile 'com.akexorcist:bluetoothspp:1.0.0'
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+Add the dependency:
+```
+compile 'com.github.mposSVK:Android-BluetoothSPPLibrary:master-SNAPSHOT'
 ```
 
 
@@ -93,7 +93,7 @@ bt.startService(BluetoothState.DEVICE_ANDROID);
 ```
 
 
-![Communicate with android](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/Connection.png)
+![Communicate with android](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/Connection.png)
 
 
 For connection with any microcontroller which communication with bluetooth serial port profile module
@@ -102,10 +102,10 @@ bt.startService(BluetoothState.DEVICE_OTHER);
 ```
 
 
-![Communicate with microcontroller](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/Connection2.png)
+![Communicate with microcontroller](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/Connection2.png)
 
 
-![Bluetooth module with SPP](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/BlueStick.png)
+![Bluetooth module with SPP](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/BlueStick.png)
 
 
 • Stop service with
@@ -121,7 +121,7 @@ startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
 
 don't forget declare library activty like this
 ```java
-<activity android:name="app.akexorcist.bluetoothspp.DeviceList" />
+<activity android:name="de.wirecard.bluetoothspp.DeviceList" />
 ```
 
 • After intent to choose device activity and finish that activity. You need to check result data on onActivityResult
@@ -251,18 +251,18 @@ button with id name = "button_scan"
 </RelativeLayout>
 ```
 
-![Custom Device List Layout](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/005.png)
+![Custom Device List Layout](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/005.png)
 
 
 But if you don't need to create layout file. You just want to change only text on device list layout. You can use bundle to change text on device list
 
-![Custom Device List Text](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/006.png)
+![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/006.png)
 
-![Custom Device List Text](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/007.png)
+![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/007.png)
 
-![Custom Device List Text](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/008.png)
+![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/008.png)
 
-![Custom Device List Text](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/009.png)
+![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/009.png)
 
 ```java
 Intent intent = new Intent(getApplicationContext(), DeviceList.class);
@@ -274,24 +274,14 @@ intent.putExtra("select_device", "Select");
 startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
 ```
 
-![Custom Device List Text](https://raw.githubusercontent.com/akexorcist/Android-BluetoothSPPLibrary/master/image/010.png)
-
-
-
-What's next?
-===========================
-- Connection Dialog 
-- Add Insecure Connection
-- Fix bug on this issue https://github.com/akexorcist/Android-BluetoothSPPLibrary/issues/21
-- Merge the code from https://github.com/akexorcist/Android-BluetoothSPPLibrary/pull/14 for a problem of auto connection
-- Human Readable Log https://github.com/akexorcist/Android-BluetoothSPPLibrary/issues/19
+![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/010.png)
 
 
 
 License
 --------------
 
-Copyright (c) 2014 Akexorcist
+Copyright (c) 2017 Wirecard
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
