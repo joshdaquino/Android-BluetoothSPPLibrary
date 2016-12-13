@@ -16,8 +16,6 @@ Feature
 
 • It's very easy to use
 
-• Auto add LF (0x0A) and CR (0x0D) when send data to connection device
-
 • No need to create layout for bluetooth device list to select device for connection. You can use built-in layout in this library and you can customize layout if you want
 
 • Auto connection supported
@@ -142,17 +140,18 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 • If you want to send any data. boolean parameter is mean that data will send with ending by LF and CR or not. If yes your data will added by LF & CR
 ```java
-bt.send("Message", true);
+bt.send("Message");
 ```
 or
 ```java
-bt.send(new byte[] { 0x30, 0x38, ....}, false);
+bt.send(new byte[] { 0x30, 0x38, ....});
 ```
 
 • Listener for data receiving
 ```java
 bt.setOnDataReceivedListener(new OnDataReceivedListener() {
-    public void onDataReceived(byte[] data, String message) {
+    public void onDataReceived(byte[] data, int length) {
+        String message = new String(data, 0, length);
         // Do something when data incoming
     }
 });
