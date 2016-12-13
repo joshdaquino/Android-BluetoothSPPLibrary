@@ -237,7 +237,7 @@ public class BluetoothService {
                 try {
                     // This is a blocking call and will only return on a
                     // successful connection or an exception
-                    if (socket != null) {
+                    if (socket == null) {
                     	socket = mmServerSocket.accept();
                     }
                 } catch (IOException e) {
