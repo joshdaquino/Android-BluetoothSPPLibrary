@@ -368,12 +368,11 @@ public class BluetoothService {
         }
 
         public void run() {
-            byte[] buffer = new byte[2048];  // buffer store for the stream
-            int bytes; // bytes returned from read()
-
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
+                    byte[] buffer = new byte[2048];  // buffer store for the stream
+                    int bytes; // bytes returned from read()
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
 
