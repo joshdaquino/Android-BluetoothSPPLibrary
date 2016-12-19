@@ -20,7 +20,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
@@ -44,6 +43,7 @@ public class BluetoothSPP {
 
     // Member object for the chat services
     private BluetoothService mChatService = null;
+    private final Handler mHandler;
 
     // Name and Address of the connected device
     private String mDeviceName = null;
@@ -63,9 +63,61 @@ public class BluetoothSPP {
 
     private int c = 0;
 
+    @SuppressWarnings("HandlerLeak")
     public BluetoothSPP(Context context) {
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case BluetoothState.MESSAGE_WRITE:
+                        break;
+                    case BluetoothState.MESSAGE_READ:
+                        int bytes = msg.arg1;
+                        if (bytes > 0 && mDataReceivedListener != null) {
+                            byte[] readBuf = (byte[]) msg.obj;
+                            mDataReceivedListener.onDataReceived(readBuf, bytes);
+                        }
+                        break;
+                    case BluetoothState.MESSAGE_DEVICE_NAME:
+                        mDeviceName = msg.getData().getString(BluetoothState.DEVICE_NAME);
+                        mDeviceAddress = msg.getData().getString(BluetoothState.DEVICE_ADDRESS);
+                        if(mBluetoothConnectionListener != null)
+                            mBluetoothConnectionListener.onDeviceConnected(mDeviceName, mDeviceAddress);
+                        isConnected = true;
+                        break;
+                    case BluetoothState.MESSAGE_TOAST:
+                        Toast.makeText(mContext, msg.getData().getString(BluetoothState.TOAST)
+                                , Toast.LENGTH_SHORT).show();
+                        break;
+                    case BluetoothState.MESSAGE_STATE_CHANGE:
+                        if(mBluetoothStateListener != null)
+                            mBluetoothStateListener.onServiceStateChanged(msg.arg1);
+                        if(isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {
+                            if(mBluetoothConnectionListener != null)
+                                mBluetoothConnectionListener.onDeviceDisconnected();
+                            if(isAutoConnectionEnabled) {
+                                isAutoConnectionEnabled = false;
+                                autoConnect(keyword);
+                            }
+                            isConnected = false;
+                            mDeviceName = null;
+                            mDeviceAddress = null;
+                        }
+
+                        if(!isConnecting && msg.arg1 == BluetoothState.STATE_CONNECTING) {
+                            isConnecting = true;
+                        } else if(isConnecting) {
+                            if(msg.arg1 != BluetoothState.STATE_CONNECTED) {
+                                if(mBluetoothConnectionListener != null)
+                                    mBluetoothConnectionListener.onDeviceConnectionFailed();
+                            }
+                            isConnecting = false;
+                        }
+                        break;
+                }
+            }
+        };
     }
 
     public interface BluetoothStateListener {
@@ -166,59 +218,6 @@ public class BluetoothSPP {
         startService(isAndroid);
         BluetoothSPP.this.isAndroid = isAndroid;
     }
-
-    @SuppressLint("HandlerLeak")
-    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-            case BluetoothState.MESSAGE_WRITE:
-                break;
-            case BluetoothState.MESSAGE_READ:
-                int bytes = msg.arg1;
-                if (bytes > 0 && mDataReceivedListener != null) {
-                    byte[] readBuf = (byte[]) msg.obj;
-                    mDataReceivedListener.onDataReceived(readBuf, bytes);
-                }
-                break;
-            case BluetoothState.MESSAGE_DEVICE_NAME:
-                mDeviceName = msg.getData().getString(BluetoothState.DEVICE_NAME);
-                mDeviceAddress = msg.getData().getString(BluetoothState.DEVICE_ADDRESS);
-                if(mBluetoothConnectionListener != null)
-                    mBluetoothConnectionListener.onDeviceConnected(mDeviceName, mDeviceAddress);
-                isConnected = true;
-                break;
-            case BluetoothState.MESSAGE_TOAST:
-                Toast.makeText(mContext, msg.getData().getString(BluetoothState.TOAST)
-                        , Toast.LENGTH_SHORT).show();
-                break;
-            case BluetoothState.MESSAGE_STATE_CHANGE:
-                if(mBluetoothStateListener != null)
-                    mBluetoothStateListener.onServiceStateChanged(msg.arg1);
-                if(isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {
-                    if(mBluetoothConnectionListener != null)
-                        mBluetoothConnectionListener.onDeviceDisconnected();
-                    if(isAutoConnectionEnabled) {
-                        isAutoConnectionEnabled = false;
-                        autoConnect(keyword);
-                    }
-                    isConnected = false;
-                    mDeviceName = null;
-                    mDeviceAddress = null;
-                }
-
-                if(!isConnecting && msg.arg1 == BluetoothState.STATE_CONNECTING) {
-                    isConnecting = true;
-                } else if(isConnecting) {
-                    if(msg.arg1 != BluetoothState.STATE_CONNECTED) {
-                        if(mBluetoothConnectionListener != null)
-                            mBluetoothConnectionListener.onDeviceConnectionFailed();
-                    }
-                    isConnecting = false;
-                }
-                break;
-            }
-        }
-    };
 
     public void stopAutoConnect() {
         if (isAutoConnectionEnabled) {
