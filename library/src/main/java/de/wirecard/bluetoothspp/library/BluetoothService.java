@@ -324,7 +324,7 @@ public class BluetoothService {
                 // Close the socket
                 try {
                     mmSocket.close();
-                } catch (IOException e2) { }
+                } catch (Exception e2) { }
                 connectionFailed();
                 return;
             }
