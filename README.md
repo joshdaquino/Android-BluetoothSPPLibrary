@@ -2,7 +2,7 @@ Android-BluetoothSPPLibrary
 ===========================
 
 
-![BluetoothSPP Library](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/header.png)
+![BluetoothSPP Library](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/header.png)
 
 
 Bluetooth Serial Port Profile which comfortable to developer application to communication with microcontroller or android device via bluetooth.
@@ -38,7 +38,7 @@ allprojects {
 ```
 Add the dependency:
 ```
-compile 'com.github.mposSVK:Android-BluetoothSPPLibrary:master-SNAPSHOT'
+compile 'com.github.joshdaquino:Android-BluetoothSPPLibrary:master-SNAPSHOT'
 ```
 
 
@@ -89,7 +89,7 @@ bt.startService(BluetoothState.DEVICE_ANDROID);
 ```
 
 
-![Communicate with android](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/Connection.png)
+![Communicate with android](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/Connection.png)
 
 
 For connection with any microcontroller which communication with bluetooth serial port profile module
@@ -98,10 +98,10 @@ bt.startService(BluetoothState.DEVICE_OTHER);
 ```
 
 
-![Communicate with microcontroller](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/Connection2.png)
+![Communicate with microcontroller](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/Connection2.png)
 
 
-![Bluetooth module with SPP](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/BlueStick.png)
+![Bluetooth module with SPP](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/BlueStick.png)
 
 
 • Stop service with
@@ -248,18 +248,18 @@ button with id name = "button_scan"
 </RelativeLayout>
 ```
 
-![Custom Device List Layout](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/005.png)
+![Custom Device List Layout](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/005.png)
 
 
 But if you don't need to create layout file. You just want to change only text on device list layout. You can use bundle to change text on device list
 
-![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/006.png)
+![Custom Device List Text](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/006.png)
 
-![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/007.png)
+![Custom Device List Text](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/007.png)
 
-![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/008.png)
+![Custom Device List Text](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/008.png)
 
-![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/009.png)
+![Custom Device List Text](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/009.png)
 
 ```java
 Intent intent = new Intent(getApplicationContext(), DeviceList.class);
@@ -271,7 +271,7 @@ intent.putExtra("select_device", "Select");
 startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
 ```
 
-![Custom Device List Text](https://raw.githubusercontent.com/mposSVK/Android-BluetoothSPPLibrary/master/image/010.png)
+![Custom Device List Text](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/010.png)
 
 
 
