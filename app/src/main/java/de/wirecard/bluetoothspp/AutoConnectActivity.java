@@ -26,6 +26,7 @@ import de.wirecard.bluetoothspp.library.BluetoothSPP;
 import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
 import de.wirecard.bluetoothspp.library.BluetoothState;
 import de.wirecard.bluetoothspp.library.DeviceList;
+import de.wirecard.bluetoothspp.library.HandReader;
 
 public class AutoConnectActivity extends Activity {
     BluetoothSPP bt;
@@ -34,8 +35,10 @@ public class AutoConnectActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autoconnect);
 
-        bt = new BluetoothSPP(this);
+        // Initialize Bluetooth
+        bt = new BluetoothSPP(this, HandReader.BLUEBERRY);
 
+        // Check if BT is available
         if(!bt.isBluetoothAvailable()) {
             Toast.makeText(getApplicationContext()
                     , "Bluetooth is not available"

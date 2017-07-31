@@ -33,6 +33,7 @@ import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener
 import de.wirecard.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
 import de.wirecard.bluetoothspp.library.BluetoothState;
 import de.wirecard.bluetoothspp.library.DeviceList;
+import de.wirecard.bluetoothspp.library.HandReader;
 
 public class TerminalActivity extends Activity {
     BluetoothSPP bt;
@@ -51,7 +52,7 @@ public class TerminalActivity extends Activity {
         textStatus = (TextView)findViewById(R.id.textStatus);
         etMessage = (EditText)findViewById(R.id.etMessage);
 
-        bt = new BluetoothSPP(this);
+        bt = new BluetoothSPP(this, HandReader.BLUEBERRY);
 
         if(!bt.isBluetoothAvailable()) {
             Toast.makeText(getApplicationContext()

@@ -28,6 +28,7 @@ import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener
 import de.wirecard.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
 import de.wirecard.bluetoothspp.library.BluetoothState;
 import de.wirecard.bluetoothspp.library.DeviceList;
+import de.wirecard.bluetoothspp.library.HandReader;
 
 public class SimpleActivity extends Activity {
 	BluetoothSPP bt;
@@ -36,7 +37,7 @@ public class SimpleActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_simple);
 		
-		bt = new BluetoothSPP(this);
+		bt = new BluetoothSPP(this, HandReader.BLUEBERRY);
 
 		if(!bt.isBluetoothAvailable()) {
 			Toast.makeText(getApplicationContext()

@@ -59,6 +59,7 @@ public class BluetoothSPP {
 
     private String keyword = "";
     private boolean isAndroid = BluetoothState.DEVICE_ANDROID;
+    private HandReader handReader = HandReader.GENERIC;
 
     // Carriage Return and Line Feed
     private static final byte[] CRLF = (("\r\n").getBytes());//{ 0x0D, 0x0A }; // \r\n
@@ -72,7 +73,8 @@ public class BluetoothSPP {
     private int c = 0;
 
     @SuppressWarnings("HandlerLeak")
-    public BluetoothSPP(Context context) {
+    public BluetoothSPP(Context context, HandReader handReader) {
+        this.handReader = handReader;
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mHandler = new Handler() {
@@ -296,7 +298,7 @@ public class BluetoothSPP {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try {
-                outputStream.write(TERTIUM_PREFIX);
+                if (handReader == HandReader.BLUEBERRY) outputStream.write(TERTIUM_PREFIX);
                 outputStream.write(data);
                 outputStream.write(CRLF);
             } catch (IOException e) {
