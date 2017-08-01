@@ -50,6 +50,7 @@ public class BluetoothService {
     // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
+    private final HandReader handReader;
     private AcceptThread mSecureAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
@@ -59,10 +60,17 @@ public class BluetoothService {
     // Constructor. Prepares a new BluetoothChat session
     // context : The UI Activity Context
     // handler : A Handler to send messages back to the UI Activity
-    public BluetoothService(Context context, Handler handler) {
+    /*public BluetoothService(Context context, Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = BluetoothState.STATE_NONE;
         mHandler = handler;
+    }*/
+
+    public BluetoothService(Context context, Handler handler, HandReader handReader) {
+        mAdapter = BluetoothAdapter.getDefaultAdapter();
+        mState = BluetoothState.STATE_NONE;
+        mHandler = handler;
+        this.handReader = handReader;
     }
 
     private String getNameOfState(int state) {
@@ -401,23 +409,30 @@ public class BluetoothService {
             while (true) {
                 try {
                     // Read from the InputStream and prevent stream from cutting off.
-                    bytes = mmInStream.read();
-                    if (bytes == 0x0A) {
-                    } else if (bytes == 0x0D) {
-                        buffer = new byte[arr_byte.size()];
-                        for (int i = 0; i < arr_byte.size(); i++) {
-                            buffer[i] = arr_byte.get(i).byteValue();
-                        }
+                    if (!handReader.equals(HandReader.BLUEBERRY)) {
+                        byte[] buffer1 = new byte[2048];  // buffer store for the stream
+                        int bytes1; // bytes returned from read()
+                        // Read from the InputStream
+                        bytes1 = mmInStream.read(buffer1);
+
                         // Send the obtained bytes to the UI Activity
-                        mHandler.obtainMessage(BluetoothState.MESSAGE_READ, buffer.length, -1, buffer).sendToTarget();
-                        arr_byte = new ArrayList<Integer>();
+                        mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes1, -1, buffer1).sendToTarget();
                     } else {
-                        arr_byte.add(bytes);
+                        bytes = mmInStream.read();
+                        if (bytes == 0x0A) {
+                        } else if (bytes == 0x0D) {
+                            buffer = new byte[arr_byte.size()];
+                            for (int i = 0; i < arr_byte.size(); i++) {
+                                buffer[i] = arr_byte.get(i).byteValue();
+                            }
+                            // Send the obtained bytes to the UI Activity
+                            mHandler.obtainMessage(BluetoothState.MESSAGE_READ, buffer.length, -1, buffer).sendToTarget();
+                            arr_byte = new ArrayList<Integer>();
+                        } else {
+                            arr_byte.add(bytes);
+                        }
                     }
 
-
-                    // Send the obtained bytes to the UI Activity
-                    //mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
                 } catch (IOException e) {
                     connectionLost();
                     // Start the service over to restart listening mode
