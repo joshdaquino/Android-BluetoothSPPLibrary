@@ -300,7 +300,7 @@ public class BluetoothSPP {
             try {
                 if (handReader == HandReader.BLUEBERRY) outputStream.write(TERTIUM_PREFIX);
                 outputStream.write(data);
-                outputStream.write(CRLF);
+                if (handReader == HandReader.BLUEBERRY) outputStream.write(CRLF);
             } catch (IOException e) {
                 e.printStackTrace();
             }
