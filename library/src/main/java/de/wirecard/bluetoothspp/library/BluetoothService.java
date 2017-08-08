@@ -419,6 +419,8 @@ public class BluetoothService {
                         mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes1, -1, buffer1).sendToTarget();
                     } else {
                         bytes = mmInStream.read();
+                        // If the data is a "/n" (0x0A) then skip it, else if it's a "/r" (0x0D) then add it to the array,
+                        // if it's any other character then keep adding to the array until it reaches "/r" then send it to the handler.
                         if (bytes == 0x0A) {
                         } else if (bytes == 0x0D) {
                             buffer = new byte[arr_byte.size()];
