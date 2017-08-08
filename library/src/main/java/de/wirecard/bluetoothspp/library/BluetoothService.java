@@ -409,7 +409,7 @@ public class BluetoothService {
             while (true) {
                 try {
                     // Read from the InputStream and prevent stream from cutting off.
-                    if (!handReader.equals(HandReader.BLUEBERRY)) {
+                    if (!handReader.equals(HandReader.TECCO)) {
                         byte[] buffer1 = new byte[2048];  // buffer store for the stream
                         int bytes1; // bytes returned from read()
                         // Read from the InputStream
