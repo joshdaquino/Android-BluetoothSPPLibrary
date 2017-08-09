@@ -1,13 +1,13 @@
 Android-BluetoothSPPLibrary
 ===========================
+[![](https://jitpack.io/v/joshdaquino/Android-BluetoothSPPLibrary.svg)](https://jitpack.io/#joshdaquino/Android-BluetoothSPPLibrary)
 
 
 ![BluetoothSPP Library](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/header.png)
 
+This fork is aimed to help with the connection between Android and Bluetooth RFID Hand Readers.
 
-Bluetooth Serial Port Profile which comfortable to developer application to communication with microcontroller or android device via bluetooth.
-
-This libraly include all important methods for serial port profile on bluetooth communication. It has built-in bluetooth device list.
+This libraly includes all important methods for serial port profile on bluetooth communication. It has built-in bluetooth device list.
 
 
 
@@ -59,7 +59,7 @@ For Android Studio : Use Gradle to download this library from Maven
 
 • Declare BluetoothSPP like this
 ```java
-BluetoothSPP bt = new BluetoothSPP(Context);
+BluetoothSPP bt = new BluetoothSPP(Context, HandReader);
 ```
 
 • Check if bluetooth is now available
@@ -83,25 +83,11 @@ public void onStart() {
 
 • if bluetooth is ready call this method to start service
 
-For connection with android device 
-```java
-bt.startService(BluetoothState.DEVICE_ANDROID);
-```
 
-
-![Communicate with android](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/Connection.png)
-
-
-For connection with any microcontroller which communication with bluetooth serial port profile module
+For connection with any RFID Hand Reader which communication with bluetooth serial port profile module
 ```java
 bt.startService(BluetoothState.DEVICE_OTHER);
 ```
-
-
-![Communicate with microcontroller](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/Connection2.png)
-
-
-![Bluetooth module with SPP](https://raw.githubusercontent.com/joshdaquino/Android-BluetoothSPPLibrary/master/image/BlueStick.png)
 
 
 • Stop service with
