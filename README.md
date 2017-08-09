@@ -7,9 +7,7 @@ Android-BluetoothSPPLibrary
 
 This fork is aimed to help with the connection between Android and Bluetooth RFID Hand Readers.
 
-This libraly includes all important methods for serial port profile on bluetooth communication. It has built-in bluetooth device list.
-
-
+This library includes all important methods for serial port profile on bluetooth communication.
 
 Feature
 --------------
