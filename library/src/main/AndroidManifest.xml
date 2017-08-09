@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application>
-        <activity android:name="com.github.joshdaquino.bluetoothspp.library.DeviceList" />
+        <activity android:name="com.joshdaquino.bluetoothspp.library.DeviceList" />
     </application>
 
 </manifest>
