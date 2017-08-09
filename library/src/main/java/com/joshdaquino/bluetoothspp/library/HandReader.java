@@ -1,4 +1,4 @@
-package de.wirecard.bluetoothspp.library;
+package com.joshdaquino.bluetoothspp.library;
 
 /**
  * Created by joshua on 17/07/31.

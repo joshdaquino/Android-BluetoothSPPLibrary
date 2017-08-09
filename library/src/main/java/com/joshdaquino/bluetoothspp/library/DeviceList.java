@@ -13,7 +13,7 @@
  */
 
 
-package de.wirecard.bluetoothspp.library;
+package com.joshdaquino.bluetoothspp.library;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,7 +37,7 @@ import android.widget.TextView;
 
 import java.util.Set;
 
-import de.wirecard.bluetotohspp.library.R;
+import com.joshdaquino.bluetotohspp.library.R;
 
 @SuppressLint("NewApi")
 public class DeviceList extends Activity {

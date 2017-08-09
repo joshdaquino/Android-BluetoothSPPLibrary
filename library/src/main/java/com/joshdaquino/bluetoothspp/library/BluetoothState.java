@@ -13,7 +13,7 @@
  */
 
 
-package de.wirecard.bluetoothspp.library;
+package com.joshdaquino.bluetoothspp.library;
 
 public class BluetoothState {
     // Constants that indicate the current connection state

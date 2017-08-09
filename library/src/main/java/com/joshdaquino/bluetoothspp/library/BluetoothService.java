@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.wirecard.bluetoothspp.library;
+package com.joshdaquino.bluetoothspp.library;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;

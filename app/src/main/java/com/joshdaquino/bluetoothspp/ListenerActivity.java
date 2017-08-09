@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package de.wirecard.bluetoothspp;
+package com.joshdaquino.bluetoothspp;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,18 +23,21 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import de.wirecard.bluetoothspp.library.BluetoothSPP;
-import de.wirecard.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
-import de.wirecard.bluetoothspp.library.BluetoothState;
-import de.wirecard.bluetoothspp.library.DeviceList;
-import de.wirecard.bluetoothspp.library.HandReader;
+import com.joshdaquino.bluetoothspp.library.BluetoothSPP;
+import com.joshdaquino.bluetoothspp.library.BluetoothSPP.AutoConnectionListener;
+import com.joshdaquino.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
+import com.joshdaquino.bluetoothspp.library.BluetoothSPP.BluetoothStateListener;
+import com.joshdaquino.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
+import com.joshdaquino.bluetoothspp.library.BluetoothState;
+import com.joshdaquino.bluetoothspp.library.DeviceList;
+import com.joshdaquino.bluetoothspp.library.HandReader;
 
-public class DeviceListActivity extends Activity {
+public class ListenerActivity extends Activity {
     BluetoothSPP bt;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_devicelist);
+        setContentView(R.layout.activity_listener);
 
         bt = new BluetoothSPP(this, HandReader.BLUEBERRY);
 
@@ -45,10 +48,46 @@ public class DeviceListActivity extends Activity {
             finish();
         }
 
+        bt.setBluetoothStateListener(new BluetoothStateListener() {
+            public void onServiceStateChanged(int state) {
+                if(state == BluetoothState.STATE_CONNECTED)
+                    Log.i("Check", "State : Connected");
+                else if(state == BluetoothState.STATE_CONNECTING)
+                    Log.i("Check", "State : Connecting");
+                else if(state == BluetoothState.STATE_LISTEN)
+                    Log.i("Check", "State : Listen");
+                else if(state == BluetoothState.STATE_NONE)
+                    Log.i("Check", "State : None");
+            }
+        });
+
         bt.setOnDataReceivedListener(new OnDataReceivedListener() {
             public void onDataReceived(byte[] data, int length) {
-                Log.i("Check", "Length : " + length);
                 Log.i("Check", "Message : " + new String(data, 0, length));
+            }
+        });
+
+        bt.setBluetoothConnectionListener(new BluetoothConnectionListener() {
+            public void onDeviceConnected(String name, String address) {
+                Log.i("Check", "Device Connected!!");
+            }
+
+            public void onDeviceDisconnected() {
+                Log.i("Check", "Device Disconnected!!");
+            }
+
+            public void onDeviceConnectionFailed() {
+                Log.i("Check", "Unable to Connected!!");
+            }
+        });
+
+        bt.setAutoConnectionListener(new AutoConnectionListener() {
+            public void onNewConnection(String name, String address) {
+                Log.i("Check", "New Connection - " + name + " - " + address);
+            }
+
+            public void onAutoConnectionStarted() {
+                Log.i("Check", "Auto menu_connection started");
             }
         });
 
@@ -58,14 +97,7 @@ public class DeviceListActivity extends Activity {
                 if(bt.getServiceState() == BluetoothState.STATE_CONNECTED) {
                     bt.disconnect();
                 } else {
-                    Intent intent = new Intent(DeviceListActivity.this, DeviceList.class);
-                    intent.putExtra("bluetooth_devices", "Bluetooth devices");
-                    intent.putExtra("no_devices_found", "No device");
-                    intent.putExtra("scanning", "Scanning");
-                    intent.putExtra("scan_for_devices", "Search");
-                    intent.putExtra("select_device", "Select");
-                    intent.putExtra("layout_list", R.layout.device_layout_list);
-                    intent.putExtra("layout_text", R.layout.device_layout_text);
+                    Intent intent = new Intent(ListenerActivity.this, DeviceList.class);
                     startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
                 }
             }
@@ -106,12 +138,5 @@ public class DeviceListActivity extends Activity {
         }
     }
 
-    public void setup() {
-        Button btnSend = (Button)findViewById(R.id.btnSend);
-        btnSend.setOnClickListener(new OnClickListener(){
-            public void onClick(View v){
-                bt.send("Text");
-            }
-        });
-    }
+    public void setup() { }
 }

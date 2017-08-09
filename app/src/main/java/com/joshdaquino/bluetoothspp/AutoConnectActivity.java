@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package de.wirecard.bluetoothspp;
+package com.joshdaquino.bluetoothspp;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,11 +22,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import de.wirecard.bluetoothspp.library.BluetoothSPP;
-import de.wirecard.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
-import de.wirecard.bluetoothspp.library.BluetoothState;
-import de.wirecard.bluetoothspp.library.DeviceList;
-import de.wirecard.bluetoothspp.library.HandReader;
+import com.joshdaquino.bluetoothspp.library.BluetoothSPP;
+import com.joshdaquino.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
+import com.joshdaquino.bluetoothspp.library.BluetoothState;
+import com.joshdaquino.bluetoothspp.library.DeviceList;
+import com.joshdaquino.bluetoothspp.library.HandReader;
 
 public class AutoConnectActivity extends Activity {
     BluetoothSPP bt;

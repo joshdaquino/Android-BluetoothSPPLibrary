@@ -264,7 +264,7 @@ startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
 License
 --------------
 
-Copyright (c) 2017 Wirecard
+Copyright (c) 2017 joshdaquino
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
