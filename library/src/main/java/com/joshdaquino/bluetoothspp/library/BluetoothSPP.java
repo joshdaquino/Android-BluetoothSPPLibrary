@@ -200,6 +200,10 @@ public class BluetoothSPP {
         return mBluetoothAdapter;
     }
 
+  public HandReader getHandReader() {
+    return handReader;
+  }
+
     public int getServiceState() {
         if (mChatService != null)
             return mChatService.getState();
