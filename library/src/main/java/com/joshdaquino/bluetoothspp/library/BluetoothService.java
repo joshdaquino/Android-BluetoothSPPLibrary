@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 @SuppressLint("NewApi")
@@ -66,11 +67,17 @@ public class BluetoothService {
         mHandler = handler;
     }*/
 
-    public BluetoothService(Context context, Handler handler, HandReader handReader) {
+    int debug_No;
+    int debug_Cnt_a = 0;//通信受け取り
+    int debug_Cnt_b = 0;//タグ読み取り
+    int debug_Cnt_send = 0;//送信回数
+
+    public BluetoothService(Context context, Handler handler, HandReader handReader, int debug_No) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = BluetoothState.STATE_NONE;
         mHandler = handler;
         this.handReader = handReader;
+        this.debug_No = debug_No;
     }
 
     private String getNameOfState(int state) {
@@ -133,6 +140,7 @@ public class BluetoothService {
     // device : The BluetoothDevice to connect
     // secure : Socket Security type - Secure (true) , Insecure (false)
     public synchronized void connect(BluetoothDevice device) {
+        Log.w("★@@BT["+debug_No+"]", "コンストラクタ");
         // Cancel any thread attempting to make a connection
         if (mState == BluetoothState.STATE_CONNECTING) {
             if (mConnectThread != null) {
@@ -160,6 +168,8 @@ public class BluetoothService {
      * @param device The BluetoothDevice that has been connected
      */
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice device, final String socketType) {
+      debug_No++;
+      Log.w("★@@BT["+debug_No+"]", "開始");
         // Cancel the thread that completed the connection
         if (mConnectThread != null) {
             mConnectThread.cancel();
@@ -417,8 +427,11 @@ public class BluetoothService {
 
                         // Send the obtained bytes to the UI Activity
                         mHandler.obtainMessage(BluetoothState.MESSAGE_READ, bytes1, -1, buffer1).sendToTarget();
+                        Log.w("★@@BT["+debug_No+"]", "受信データ[]:"+ Arrays.toString(buffer1));
+
                     } else {
                         bytes = mmInStream.read();
+
                         // If the data is a "/n" (0x0A) then skip it, else if it's a "/r" (0x0D) then add it to the array,
                         // if it's any other character then keep adding to the array until it reaches "/r" then send it to the handler.
                         if (bytes == 0x0A) {
@@ -429,10 +442,12 @@ public class BluetoothService {
                             }
                             // Send the obtained bytes to the UI Activity
                             mHandler.obtainMessage(BluetoothState.MESSAGE_READ, buffer.length, -1, buffer).sendToTarget();
+
                             arr_byte = new ArrayList<Integer>();
                         } else {
                             arr_byte.add(bytes);
                         }
+                        debug_Cnt_a++;
                     }
 
                 } catch (IOException e) {
@@ -451,6 +466,7 @@ public class BluetoothService {
                 mmOutStream.write(buffer);
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(BluetoothState.MESSAGE_WRITE, -1, -1, buffer).sendToTarget();
+                Log.w("★@@BT["+debug_No+"]", "送信データ:"+ Arrays.toString(buffer));
             } catch (IOException e) {
             }
         }

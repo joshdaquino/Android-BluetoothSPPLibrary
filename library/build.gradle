@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion Integer.parseInt(project.ANDROID_COMPILE_SDK_VERSION)
-    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
-        versionCode Integer.parseInt(VERSION_CODE)
-        versionName VERSION_NAME
+        versionCode 0
+        versionName "1.0.6"
         minSdkVersion 9
     }
 
@@ -20,4 +20,4 @@ android {
     }
 }
 
-apply from: '../maven_push.gradle'
+//apply from: '../maven_push.gradle'

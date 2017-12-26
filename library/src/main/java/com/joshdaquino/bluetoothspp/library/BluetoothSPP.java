@@ -65,20 +65,24 @@ public class BluetoothSPP {
     private static final byte[] CRLF = (("\r\n").getBytes());//{ 0x0D, 0x0A }; // \r\n
 
     // Prefix for Tertium Hand Readers
-    private static final byte[] TERTIUM_PREFIX = (("$:").getBytes());//{ 0x0D, 0x0A }; // \r\n
+    private static final byte[] TERTIUM_PREFIX = (("$:").getBytes());
 
     // This is where we store the callback if AutoConnection is enabled
     private BluetoothConnectionListener mBluetoothConnectionListenerSecondary = null;
 
     private int c = 0;
 
+    private int debug_No = 0;
+
     @SuppressWarnings("HandlerLeak")
     public BluetoothSPP(Context context, HandReader handReader) {
+        Log.w("★@@BT["+debug_No+"]", "コンストラクター");
         this.handReader = handReader;
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mHandler = new Handler() {
             public void handleMessage(Message msg) {
+
                 switch (msg.what) {
                     case BluetoothState.MESSAGE_WRITE:
                         break;
@@ -112,6 +116,7 @@ public class BluetoothSPP {
                         if (isConnected && msg.arg1 != BluetoothState.STATE_CONNECTED) {
                             if (mBluetoothConnectionListener != null)
                                 mBluetoothConnectionListener.onDeviceDisconnected();
+                                Log.w("★@@BT["+mChatService.debug_No+"]", "切断された");
                             if (isAutoConnectionEnabled) {
                                 isAutoConnectionEnabled = false;
                                 autoConnect(keyword);
@@ -133,6 +138,7 @@ public class BluetoothSPP {
                         break;
                 }
             }
+
         };
     }
 
@@ -193,7 +199,7 @@ public class BluetoothSPP {
     }
 
     public void setupService() {
-        mChatService = new BluetoothService(mContext, mHandler, handReader);
+        mChatService = new BluetoothService(mContext, mHandler, handReader, debug_No);
     }
 
     public BluetoothAdapter getBluetoothAdapter() {
@@ -388,6 +394,7 @@ public class BluetoothSPP {
                     // Run the secondary callback
                     if (mBluetoothConnectionListenerSecondary != null) {
                         mBluetoothConnectionListenerSecondary.onDeviceDisconnected();
+                        Log.w("★@@BT["+mChatService.debug_No+"]", "切断された");
                     }
 
                 }
